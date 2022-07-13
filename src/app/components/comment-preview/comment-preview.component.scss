@@ -1,28 +1,53 @@
-.comment-and-children-container {
-    .comment-preview {
+@import "../../../assets/styles/mixins";
+.comment-preview {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    border: 1px solid black;
+    position: relative;
+    width: 80vw;
+    min-width: 400px;
+    max-width: 1000px;
+
+    .img-container {
+        height: 100px;
+        width: 100px;
+        border-radius: 50%;
+        overflow: hidden;
+        display: grid;
+        place-items: center;
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+    .comment-details {
         display: flex;
-        align-items: center;
-        border: 1px solid black;
-        border-radius: 1rem;
-        position: relative;
-        .img-container {
-            height: 100px;
-            width: 100px;
-            border-radius: 50%;
-            overflow: hidden;
-            display: grid;
-            place-items: center;
-            img {
-                width: 100%;
-                height: 100%;
-            }
+        flex-direction: column;
+        flex-basis: 20%;
+        .owner-name {
+            text-decoration: underline;
         }
-        .comment-details {
-            display: flex;
-            flex-direction: column;
-            flex-basis: 20%;
+    }
+    .actions {
+        button {
+            @include primary-button;
+            margin: 2px;
         }
-        .actions {
+    }
+    .add-comment {
+        position: absolute;
+        right: 10px;
+        bottom: 5px;
+        font-size: 0.8rem;
+        cursor: pointer;
+    }
+}
+
+@media (max-width: 1100px) {
+    .comment-preview {
+        &.deep {
+            @include box-preview;
         }
     }
 }

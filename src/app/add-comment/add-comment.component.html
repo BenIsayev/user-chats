@@ -1,0 +1,5 @@
+<div>
+    <h2>{{comment.id ? 'Edit' : 'Add' }} Comment</h2>
+    <input type="text" [(ngModel)]="comment.txt" />
+    <button [disabled]="comment.txt?.trim().length <= 0" (click)="addCommentHandler()">Add Comment</button>
+</div>

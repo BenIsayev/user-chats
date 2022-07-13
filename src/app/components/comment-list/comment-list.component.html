@@ -1,5 +1,5 @@
 <div *ngFor="let comment of comments">
     <comment-preview [comment]="comment" [activeUser]="activeUser" (deleteComment)="deleteComment.emit($event)"
-        *ngIf="!comment.deletedAt">
+        (addComment)="addComment.emit($event)" *ngIf="!comment.deletedAt" [level]="1">
     </comment-preview>
 </div>

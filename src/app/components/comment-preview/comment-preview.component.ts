@@ -14,15 +14,25 @@ export class CommentPreviewComponent implements OnInit {
 
   @Input() comment: Comment;
   @Input() activeUser: User;
+  @Input() level: number;
   @Output() deleteComment = new EventEmitter();
+  @Output() addComment = new EventEmitter();
 
   isCommentOwner: boolean;
-
+  styleForPosition: Object;
   userImgUrl: string;
+  isAddComment: boolean;
+
   ngOnInit(): void {
     this.userImgUrl = `/assets/users/${this.comment.ownerId}.jpg`;
+    this.styleForPosition = {
+      left: this.level * 50 + 'px',
+    };
   }
   ngOnChanges() {
     this.isCommentOwner = this.activeUser.id === this.comment.ownerId;
+  }
+  toggleAddComment() {
+    this.isAddComment = !this.isAddComment;
   }
 }

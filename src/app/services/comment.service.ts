@@ -38,8 +38,6 @@ export class CommentService {
       };
     });
 
-    comments = this.sortCommentsByDate(comments);
-
     this.saveComments(comments);
     return comments;
   } //Import the comments from a file in case not found in the local storage
@@ -47,7 +45,9 @@ export class CommentService {
   async loadComments() {
     let comments =
       this.loadCommentsFromLocalStorage() || (await this.importComments());
+    comments = this.sortCommentsByDate(comments);
     comments = this.sortByChildren(comments);
+
     this._comments$.next(comments);
   } //Load comments and setting them in the comments observables(subscribed in relevent components)
 
@@ -85,6 +85,8 @@ export class CommentService {
         mappedComments.push(getChildren(comment));
       });
 
+    console.log(mappedComments);
+
     return mappedComments;
   }
 
@@ -95,5 +97,28 @@ export class CommentService {
     comment.deletedAt = new Date().toString();
     this.saveComments(comments);
     this.loadComments();
+  }
+
+  addComment(comment) {
+    const commentToAdd = this.getEmptyComment();
+    commentToAdd.owner = comment.owner;
+    commentToAdd.ownerId = comment.owner.id;
+    commentToAdd.txt = comment.txt;
+    commentToAdd.parentCommentId = comment.parentCommentId;
+
+    const comments = this.loadCommentsFromLocalStorage();
+    comments.push(commentToAdd);
+    this.saveComments(comments);
+    this.loadComments();
+  }
+
+  private getEmptyComment(): Comment {
+    return {
+      id: +Date.now(),
+      parentCommentId: null,
+      createdAt: new Date().toString(),
+      deletedAt: null,
+      children: [],
+    } as Comment;
   }
 }

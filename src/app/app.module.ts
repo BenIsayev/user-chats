@@ -10,10 +10,21 @@ import { CommentPageComponent } from './pages/comment-page/comment-page.componen
 import { CommentListComponent } from './components/comment-list/comment-list.component';
 import { CommentPreviewComponent } from './components/comment-preview/comment-preview.component';
 import { TimeformatPipe } from './pipes/timeformat.pipe';
+import { AddCommentComponent } from './add-comment/add-comment.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [AppComponent, MainHeaderComponent, ChooseUserComponent, CommentPageComponent, CommentListComponent, CommentPreviewComponent, TimeformatPipe],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
+  declarations: [
+    AppComponent,
+    MainHeaderComponent,
+    ChooseUserComponent,
+    CommentPageComponent,
+    CommentListComponent,
+    CommentPreviewComponent,
+    TimeformatPipe,
+    AddCommentComponent,
+  ],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent],
 })

@@ -12,6 +12,7 @@ export class CommentListComponent implements OnInit {
   @Input() comments: Comment[];
   @Input() activeUser: User;
   @Output() deleteComment = new EventEmitter();
+  @Output() addComment = new EventEmitter();
 
   ngOnInit(): void {}
 }

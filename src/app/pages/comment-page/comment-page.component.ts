@@ -30,6 +30,8 @@ export class CommentPageComponent implements OnInit, OnDestroy {
 
     this.commentsSubscription = this.commentService.comments$.subscribe(
       (comments) => {
+        console.log('updated', comments);
+
         this.comments = comments;
       }
     );
@@ -42,5 +44,10 @@ export class CommentPageComponent implements OnInit, OnDestroy {
 
   deleteComment(commentId) {
     this.commentService.deleteComment(commentId);
+  }
+  addComment(comment) {
+    if (!this.activeUser.id) return;
+    comment.owner = this.activeUser;
+    this.commentService.addComment(comment);
   }
 }
