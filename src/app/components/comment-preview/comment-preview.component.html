@@ -14,7 +14,7 @@
         <button (click)="deleteComment.emit(comment.id)">
             Delete
         </button>
-        <button>
+        <button (click)="toggleEditComment()">
             Edit
         </button>
     </div>
@@ -24,6 +24,10 @@
     <div class="add-comment" (click)="toggleAddComment()">
         Comment to this comment
     </div>
+</div>
+<div *ngIf="isEditComment">
+    <add-comment [commentId]="comment.id" [txt]="comment.txt" (addComment)="addComment.emit($event)"
+        [parentCommentId]="comment.id"></add-comment>
 </div>
 <div *ngIf="comment.children">
     <div *ngFor="let childComment of comment.children">

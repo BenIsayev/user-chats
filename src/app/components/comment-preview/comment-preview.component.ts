@@ -22,6 +22,7 @@ export class CommentPreviewComponent implements OnInit {
   styleForPosition: Object;
   userImgUrl: string;
   isAddComment: boolean;
+  isEditComment: boolean;
 
   ngOnInit(): void {
     this.userImgUrl = `/assets/users/${this.comment.ownerId}.jpg`;
@@ -34,5 +35,8 @@ export class CommentPreviewComponent implements OnInit {
   }
   toggleAddComment() {
     this.isAddComment = !this.isAddComment;
+  }
+  toggleEditComment() {
+    this.isEditComment = !this.isEditComment;
   }
 }

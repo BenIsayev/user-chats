@@ -48,6 +48,6 @@ export class CommentPageComponent implements OnInit, OnDestroy {
   addComment(comment) {
     if (!this.activeUser.id) return;
     comment.owner = this.activeUser;
-    this.commentService.addComment(comment);
+    this.commentService.handleComment(comment);
   }
 }

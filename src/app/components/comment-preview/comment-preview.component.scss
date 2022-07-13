@@ -3,11 +3,12 @@
     margin-top: 1rem;
     display: flex;
     align-items: center;
-    border: 1px solid black;
+    border: 1px solid #cacaca;
     position: relative;
     width: 80vw;
     min-width: 400px;
     max-width: 1000px;
+    background: lightgray;
 
     .img-container {
         height: 100px;

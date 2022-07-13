@@ -1,4 +1,5 @@
-<select *ngIf="users" (change)="chooseUser($event)">
-    <option value="null" disabled selected>Choose User</option>
-    <option *ngFor="let user of users" [value]="user.id">{{user.displayName}}</option>
+<select *ngIf="users" (change)="chooseUser($event)" [value]="chosenUser.id">
+    <option value="null" disabled [selected]="!chosenUser?.id">Choose User</option>
+    <option *ngFor="let user of users" [value]="user.id" [selected]="chosenUser.id === user.id">{{user.displayName}}
+    </option>
 </select>

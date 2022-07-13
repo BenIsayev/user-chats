@@ -10,5 +10,7 @@ export class AppComponent implements OnInit {
   title = 'user-chats';
   constructor(private userService: UserService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.userService.loadActiveUser();
+  }
 }

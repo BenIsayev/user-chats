@@ -55,7 +55,7 @@ export class CommentService {
     return comments.sort((comment1, comment2) => {
       const firstCommentTime = Date.parse(comment1.createdAt);
       const secondCommentTime = Date.parse(comment2.createdAt);
-      return firstCommentTime - secondCommentTime;
+      return secondCommentTime - firstCommentTime;
     });
   }
 
@@ -99,6 +99,9 @@ export class CommentService {
     this.loadComments();
   }
 
+  handleComment(comment) {
+    comment.id ? this.editComment(comment) : this.addComment(comment);
+  }
   addComment(comment) {
     const commentToAdd = this.getEmptyComment();
     commentToAdd.owner = comment.owner;
@@ -108,6 +111,15 @@ export class CommentService {
 
     const comments = this.loadCommentsFromLocalStorage();
     comments.push(commentToAdd);
+    this.saveComments(comments);
+    this.loadComments();
+  }
+
+  editComment(commentToSave) {
+    const comments = this.loadCommentsFromLocalStorage();
+    const comment = comments.find((comment) => comment.id === commentToSave.id);
+    comment.txt = commentToSave.txt;
+    comment.createdAt = new Date().toString();
     this.saveComments(comments);
     this.loadComments();
   }
