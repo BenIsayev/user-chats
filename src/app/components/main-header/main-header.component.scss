@@ -1,0 +1,10 @@
+header {
+    padding: 0.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .logo {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+}

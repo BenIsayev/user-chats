@@ -1,0 +1,4 @@
+<select *ngIf="users" (change)="chooseUser($event)">
+    <option value="null" disabled selected>Choose User</option>
+    <option *ngFor="let user of users" [value]="user.id">{{user.displayName}}</option>
+</select>

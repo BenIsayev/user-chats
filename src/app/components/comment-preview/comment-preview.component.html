@@ -1,0 +1,31 @@
+<div class="comment-and-children-container">
+    <div class="comment-preview">
+        <!-- <ng-content></ng-content> -->
+        <div class="img-container">
+            <img [src]="userImgUrl" alt="User profile">
+        </div>
+        <div class="comment-details">
+            <span>{{comment.owner.displayName}}</span>
+            <span>{{comment.createdAt | timeformat}}</span>
+        </div>
+        <div class="comment-content">
+            <span>{{comment.txt}}</span>
+        </div>
+        <div *ngIf="isCommentOwner" class="actions">
+            <button (click)="deleteComment.emit(comment.id)">
+                Delete
+            </button>
+            <button>
+                Edit
+            </button>
+        </div>
+    </div>
+    <div *ngIf="comment.children">
+        <div *ngFor="let childComment of comment.children">
+            <comment-preview [comment]="childComment" [activeUser]="activeUser" *ngIf="!childComment.deletedAt"
+                (deleteComment)="deleteComment.emit($event)">
+                <!-- Commented to: {{comment.txt}} -->
+            </comment-preview>
+        </div>
+    </div>
+</div>
