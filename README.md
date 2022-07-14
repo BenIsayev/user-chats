@@ -4,7 +4,7 @@ This project allows you to switch between users and making comments on comments 
 
 ## Snap
 
-![alt text]([http://url/to/img.png](https://i.ibb.co/bHzXmd4/2022-07-14-18-55-59.png))
+![alt text](https://i.ibb.co/bHzXmd4/2022-07-14-18-55-59.png)
 
 ## How to run
 
