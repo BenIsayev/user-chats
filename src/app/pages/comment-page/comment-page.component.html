@@ -1,7 +1,6 @@
 <section class="comment-page">
+    <add-comment (addComment)="addComment($event)"></add-comment>
     <comment-list [comments]="comments" [activeUser]="activeUser" (deleteComment)="deleteComment($event)"
         (addComment)="addComment($event)" (deleteAccount)="deleteAccount()">
     </comment-list>
-
-    <add-comment (addComment)="addComment($event)"></add-comment>
 </section>
