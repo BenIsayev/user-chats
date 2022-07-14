@@ -1,1 +1,3 @@
-<p>user-msg works!</p>
+<div *ngIf="userMsg.txt" [class]="userMsg.type==='alert'?'alert':'success'" class="user-msg-container">
+    {{userMsg.txt}}
+</div>

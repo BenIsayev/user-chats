@@ -1,19 +1,25 @@
 @mixin box-preview {
-    .img-container {
-        display: none;
-    }
     flex-direction: column;
-    width: 200px;
+    max-width: 200px;
     gap: 2rem;
     padding: 1rem;
 }
 
 @mixin primary-button {
-    padding: 0.3rem 1rem;
+    padding: 0.7rem 2rem;
     background: rgb(37, 200, 255);
     border: none;
     border-radius: 0.2rem;
     color: white;
     font-weight: bold;
     text-transform: uppercase;
+}
+
+@mixin custom-input {
+    padding: 0.3rem 1rem;
+    border: none;
+    border-radius: 0.3rem;
+    &:focus-visible {
+        outline: none;
+    }
 }

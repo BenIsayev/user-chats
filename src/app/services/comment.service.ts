@@ -6,6 +6,7 @@ import { lastValueFrom } from 'rxjs';
 import { Comment } from '../models/comment.model';
 import { UserService } from './user.service';
 import comments from '../../assets/data/comments.json';
+import { UserMsgService } from './user-msg.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +17,11 @@ export class CommentService {
   private _comments$ = new BehaviorSubject<Comment[]>([] as Comment[]);
   public comments$ = this._comments$.asObservable();
 
-  constructor(private http: HttpClient, private userService: UserService) {}
+  constructor(
+    private http: HttpClient,
+    private userService: UserService,
+    private userMsgService: UserMsgService
+  ) {}
 
   loadCommentsFromLocalStorage() {
     return JSON.parse(localStorage.getItem(this.COMMENTS_KEY));
@@ -138,6 +143,7 @@ export class CommentService {
     }
     this.saveComments(comments);
     this.loadComments();
+    this.userMsgService.setMsg({ txt: 'Comment deleted', type: 'success' });
     subscription.unsubscribe();
 
     function flat(array) {
@@ -171,6 +177,7 @@ export class CommentService {
 
     const comments = this.loadCommentsFromLocalStorage();
     comments.push(commentToAdd);
+    this.userMsgService.setMsg({ txt: 'Comment added', type: 'success' });
     this.saveComments(comments);
     this.loadComments();
   }
@@ -180,6 +187,8 @@ export class CommentService {
     const comment = comments.find((comment) => comment.id === commentToSave.id);
     comment.txt = commentToSave.txt;
     comment.createdAt = new Date().toString();
+    this.userMsgService.setMsg({ txt: 'Comment edited', type: 'success' });
+
     this.saveComments(comments);
     this.loadComments();
   }

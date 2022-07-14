@@ -1,0 +1,17 @@
+@import "../../../assets/styles/mixins";
+.add-comment-container {
+    padding: 2rem 1rem;
+    background: lightgray;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    input {
+        @include custom-input;
+    }
+    button {
+        @include primary-button;
+    }
+}

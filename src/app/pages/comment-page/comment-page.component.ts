@@ -4,6 +4,7 @@ import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user.model';
 import { Comment } from 'src/app/models/comment.model';
 import { CommentService } from 'src/app/services/comment.service';
+import { UserMsgService } from 'src/app/services/user-msg.service';
 
 @Component({
   selector: 'comment-page',
@@ -13,7 +14,8 @@ import { CommentService } from 'src/app/services/comment.service';
 export class CommentPageComponent implements OnInit, OnDestroy {
   constructor(
     private userService: UserService,
-    private commentService: CommentService
+    private commentService: CommentService,
+    private userMsgService: UserMsgService
   ) {}
 
   userSubscription: Subscription;
@@ -44,7 +46,13 @@ export class CommentPageComponent implements OnInit, OnDestroy {
     this.commentService.deleteComment(commentId);
   }
   addComment(comment) {
-    if (!this.activeUser.id) return;
+    if (!this.activeUser.id) {
+      this.userMsgService.setMsg({
+        txt: 'Login to add comment',
+        type: 'alert',
+      });
+      return;
+    }
     comment.owner = this.activeUser;
     this.commentService.handleComment(comment);
   }

@@ -1,40 +1,40 @@
-<div class="comment-preview" [style]="styleForPosition" [class.deep]="level > 2">
-    <!-- <ng-content></ng-content> -->
-
-    <div class="img-container">
-        <img [src]="userImgUrl" alt="User profile">
+<section class="comment-preview-container">
+    <div class="comment-preview" [style]="styleForPosition" [class.deep]="level > 2">
+        <div *ngIf="isCommentOwner" class="comment-owner" title="You are the owner of this comment"></div>
+        <div class="img-container">
+            <img [src]="userImgUrl" alt="User profile">
+        </div>
+        <div class="comment-details">
+            <span class="owner-name">{{comment.owner.displayName}}</span>
+            <span class="date">{{comment.createdAt | timeformat}}</span>
+        </div>
+        <div class="content">
+            <span>{{comment.txt}}</span>
+        </div>
+        <div *ngIf="isCommentOwner" class="actions">
+            <button (click)="deleteComment.emit(comment.id)">
+                Delete
+            </button>
+            <button (click)="toggleEditComment()">
+                Edit
+            </button>
+        </div>
+        <div class="add-comment" (click)="toggleAddComment()">
+            Comment to this comment
+        </div>
     </div>
-    <div class="comment-details">
-        <span class="owner-name">{{comment.owner.displayName}}</span>
-        <span class="date">{{comment.createdAt | timeformat}}</span>
-    </div>
-    <div class="comment-content">
-        <span>{{comment.txt}}</span>
-    </div>
-    <div *ngIf="isCommentOwner" class="actions">
-        <button (click)="deleteComment.emit(comment.id)">
-            Delete
-        </button>
-        <button (click)="toggleEditComment()">
-            Edit
-        </button>
-    </div>
-    <div *ngIf="isAddComment">
+    <div *ngIf="isAddComment" class="add-comment-container" [style]="styleForPosition">
         <add-comment [parentCommentId]="comment.id" (addComment)="addComment.emit($event)"></add-comment>
     </div>
-    <div class="add-comment" (click)="toggleAddComment()">
-        Comment to this comment
+    <div *ngIf="isEditComment" class="add-comment-container" [style]="styleForPosition">
+        <add-comment [commentId]="comment.id" [txt]="comment.txt" (addComment)="addComment.emit($event)"
+            [parentCommentId]="comment.id"></add-comment>
     </div>
-</div>
-<div *ngIf="isEditComment">
-    <add-comment [commentId]="comment.id" [txt]="comment.txt" (addComment)="addComment.emit($event)"
-        [parentCommentId]="comment.id"></add-comment>
-</div>
-<div *ngIf="comment.children">
-    <div *ngFor="let childComment of comment.children">
-        <comment-preview [comment]="childComment" [activeUser]="activeUser" *ngIf="!childComment.deletedAt"
-            (deleteComment)="deleteComment.emit($event)" [level]="level + 1" (addComment)="addComment.emit($event)">
-            <!-- Commented to: {{comment.txt}} -->
-        </comment-preview>
+    <div *ngIf="comment.children">
+        <div *ngFor="let childComment of comment.children">
+            <comment-preview [comment]="childComment" [activeUser]="activeUser" *ngIf="!childComment.deletedAt"
+                (deleteComment)="deleteComment.emit($event)" [level]="level + 1" (addComment)="addComment.emit($event)">
+            </comment-preview>
+        </div>
     </div>
-</div>
+</section>
