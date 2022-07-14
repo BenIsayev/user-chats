@@ -8,9 +8,9 @@ This project allows you to switch between users and making comments on comments 
 
 ## How to run
 
-You can simply visit https://benisayev.github.io/user-chats/ to enjoy the project yourself
-or you can clone this repository and run:
-npm i
+You can simply visit https://benisayev.github.io/user-chats/ to enjoy the project yourself__
+or you can clone this repository and run:__
+npm i__
 ng serve(using angular cli)
 
 ## Technologies used
