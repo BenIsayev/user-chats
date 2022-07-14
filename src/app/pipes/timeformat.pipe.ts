@@ -23,12 +23,21 @@ export class TimeformatPipe implements PipeTransform {
       let counter;
       for (const i in intervals) {
         counter = Math.floor(seconds / intervals[i]);
-        if (counter > 0)
+
+        if (counter > 0) {
+          if (i === 'year') {
+            const dateObj = new Date(value);
+            const day = dateObj.getDate().toString().padStart(2, '0');
+            const month = dateObj.getMonth().toString().padStart(2, '0');
+            return `${day}/${month}/${dateObj.getFullYear()}`;
+          }
+
           if (counter === 1) {
             return counter + ' ' + i + ' ago'; // singular (1 day ago)
           } else {
             return counter + ' ' + i + 's ago'; // plural (2 days ago)
           }
+        }
       }
     }
     return value;
