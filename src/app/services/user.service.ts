@@ -1,9 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, of } from 'rxjs';
-import { lastValueFrom } from 'rxjs';
 import { User } from '../models/user.model';
-import { CommentService } from './comment.service';
 
 @Injectable({
   providedIn: 'root',

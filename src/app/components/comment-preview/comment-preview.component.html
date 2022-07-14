@@ -1,8 +1,8 @@
 <section class="comment-preview-container">
     <div class="comment-preview" [style]="styleForPosition" [class.deep]="level > 2">
         <div *ngIf="isCommentOwner" class="comment-owner" title="You are the owner of this comment"></div>
-        <div class="img-container">
-            <img [src]="userImgUrl" alt="User profile">
+        <div class="img-container" [style]="userImgUrl">
+            <!-- <img [src]="userImgUrl" alt="User profile"> -->
         </div>
         <div class="comment-details">
             <span class="owner-name name">{{comment.owner.displayName}}</span>

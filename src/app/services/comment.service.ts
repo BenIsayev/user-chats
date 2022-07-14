@@ -1,8 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
-import { lastValueFrom } from 'rxjs';
 import { Comment } from '../models/comment.model';
 import { UserService } from './user.service';
 import { UserMsgService } from './user-msg.service';
@@ -43,8 +41,6 @@ export class CommentService {
   } //Save comments to the local storage
 
   private async importComments() {
-    console.log('aaa');
-
     const users = await this.userService.loadUsers();
 
     let comments: any = await import('../../assets/data/comments.json');
@@ -217,7 +213,6 @@ export class CommentService {
     let ids = comments
       .filter((comment: Comment) => comment.ownerId === userId)
       .map((comment) => comment.id);
-    console.log(ids);
 
     ids.forEach((id) => {
       this.deleteComment(id);

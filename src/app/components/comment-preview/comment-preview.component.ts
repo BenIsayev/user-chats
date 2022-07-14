@@ -26,7 +26,8 @@ export class CommentPreviewComponent implements OnInit {
   isEditComment: boolean;
 
   ngOnInit(): void {
-    this.userImgUrl = `/assets/users/${this.comment.ownerId}.jpg`;
+    // this.userImgUrl = `./assets/users/${this.comment.ownerId}.jpg`;
+    this.userImgUrl = `background-image: url("/assets/users/${this.comment.ownerId}.jpg")`;
     this.styleForPosition = {
       left: this.level * 20 + 'px',
     };
