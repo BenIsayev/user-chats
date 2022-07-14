@@ -17,6 +17,7 @@ export class CommentPreviewComponent implements OnInit {
   @Input() level: number;
   @Output() deleteComment = new EventEmitter();
   @Output() addComment = new EventEmitter();
+  @Output() deleteAccount = new EventEmitter();
 
   isCommentOwner: boolean;
   styleForPosition: Object;

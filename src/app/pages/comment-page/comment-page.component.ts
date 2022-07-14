@@ -45,6 +45,11 @@ export class CommentPageComponent implements OnInit, OnDestroy {
   deleteComment(commentId) {
     this.commentService.deleteComment(commentId);
   }
+  deleteAccount() {
+    this.userService.deleteActiveUser(this.activeUser.id);
+    this.commentService.deleteUserComments(this.activeUser.id);
+  }
+
   addComment(comment) {
     if (!this.activeUser.id) {
       this.userMsgService.setMsg({

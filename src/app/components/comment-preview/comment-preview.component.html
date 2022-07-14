@@ -15,6 +15,9 @@
             <button (click)="deleteComment.emit(comment.id)">
                 Delete
             </button>
+            <button (click)="deleteAccount.emit()">
+                Delete Account
+            </button>
             <button (click)="toggleEditComment()">
                 Edit
             </button>
@@ -34,7 +37,8 @@
     <div *ngIf="comment.children">
         <div *ngFor="let childComment of comment.children">
             <comment-preview [comment]="childComment" [activeUser]="activeUser" *ngIf="!childComment.deletedAt"
-                (deleteComment)="deleteComment.emit($event)" [level]="level + 1" (addComment)="addComment.emit($event)">
+                (deleteComment)="deleteComment.emit($event)" [level]="level + 1" (addComment)="addComment.emit($event)"
+                (deleteAccount)="deleteAccount.emit()">
             </comment-preview>
         </div>
     </div>

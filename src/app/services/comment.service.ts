@@ -5,7 +5,6 @@ import { BehaviorSubject } from 'rxjs';
 import { lastValueFrom } from 'rxjs';
 import { Comment } from '../models/comment.model';
 import { UserService } from './user.service';
-import comments from '../../assets/data/comments.json';
 import { UserMsgService } from './user-msg.service';
 
 @Injectable({
@@ -207,5 +206,17 @@ export class CommentService {
       deletedAt: null,
       children: [],
     } as Comment;
+  }
+
+  public deleteUserComments(userId: number) {
+    const comments = this.loadCommentsFromLocalStorage();
+    let ids = comments
+      .filter((comment: Comment) => comment.ownerId === userId)
+      .map((comment) => comment.id);
+    console.log(ids);
+
+    ids.forEach((id) => {
+      this.deleteComment(id);
+    });
   }
 }

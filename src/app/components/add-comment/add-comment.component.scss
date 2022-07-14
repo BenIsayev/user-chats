@@ -1,14 +1,12 @@
 @import "../../../assets/styles/mixins";
 .add-comment-container {
     padding: 2rem 1rem;
-    background: lightgray;
     display: flex;
     width: 100%;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 1rem;
-    border-bottom: 1px solid #959595;
 
     input {
         @include custom-input;

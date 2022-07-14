@@ -14,9 +14,13 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
   users: User[];
   chosenUser: User;
   activeUserSubscription: Subscription;
+  usersSubscription: Subscription;
 
   async ngOnInit(): Promise<void> {
-    this.users = await this.userService.loadUsers();
+    this.userService.loadUsers();
+    this.usersSubscription = this.userService.users$.subscribe(
+      (users) => (this.users = users)
+    );
     this.activeUserSubscription = this.userService.activeUser$.subscribe(
       (activeUser) => (this.chosenUser = activeUser)
     );
@@ -24,6 +28,7 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.activeUserSubscription.unsubscribe();
+    this.usersSubscription.unsubscribe();
   }
 
   chooseUser(ev) {
