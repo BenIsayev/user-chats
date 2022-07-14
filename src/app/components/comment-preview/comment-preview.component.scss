@@ -34,10 +34,6 @@
             place-items: center;
             background-position: center;
             background-size: cover;
-            img {
-                width: 100%;
-                height: 100%;
-            }
         }
         .comment-details {
             max-width: 100px;
@@ -60,6 +56,7 @@
             transition: opacity 0.3s;
             opacity: 0;
             pointer-events: none;
+            display: flex;
             position: absolute;
             left: 50%;
             top: 50%;
