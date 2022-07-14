@@ -1,5 +1,8 @@
 <section class="comment-preview-container">
     <div class="comment-preview" [style]="styleForPosition" [class.deep]="level > 2">
+        <div class="parent-comment">
+            <ng-content></ng-content>
+        </div>
         <div *ngIf="isCommentOwner" class="comment-owner" title="You are the owner of this comment"></div>
         <div class="img-container" [style]="userImgUrl">
         </div>
@@ -38,6 +41,7 @@
             <comment-preview [comment]="childComment" [activeUser]="activeUser" *ngIf="!childComment.deletedAt"
                 (deleteComment)="deleteComment.emit($event)" [level]="level + 1" (addComment)="addComment.emit($event)"
                 (deleteAccount)="deleteAccount.emit()">
+                Comment to: {{comment.txt}}
             </comment-preview>
         </div>
     </div>

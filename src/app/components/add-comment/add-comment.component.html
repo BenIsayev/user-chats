@@ -1,6 +1,10 @@
 <div class="add-comment-container">
-    <h2>{{comment.id ? 'Edit' : 'Add' }} Comment</h2>
-    <input type="text" [(ngModel)]="comment.txt" />
-    <button [disabled]="comment.txt?.trim().length <= 0" (click)="addCommentHandler()">{{comment.id ? 'Edit' : 'Add'}}
-        Comment</button>
+    <div class="img-container" [style]="activeUserImg"></div>
+    <div>
+        <h2>{{comment.id ? 'Edit' : 'Add' }} Comment</h2>
+        <input type="text" [(ngModel)]="comment.txt" placeholder="Enter comment.." />
+        <button [disabled]="comment.txt?.trim().length <= 0" (click)="addCommentHandler()">{{comment.id ? 'Edit' :
+            'Add'}}
+            Comment</button>
+    </div>
 </div>
