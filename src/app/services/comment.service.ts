@@ -23,6 +23,7 @@ export class CommentService {
   ) {}
 
   async loadComments() {
+    //Load comments and setting them in the comments observables(subscribed in relevent components)
     let comments =
       this.loadCommentsFromLocalStorage() || (await this.importComments());
     comments = this.sortCommentsByDate(comments);
@@ -30,22 +31,25 @@ export class CommentService {
     comments = this.sortByChildrenSecond(comments); // Another way to sort by children(a little more simple)
 
     this._comments$.next(comments);
-  } //Load comments and setting them in the comments observables(subscribed in relevent components)
+  }
 
   private loadCommentsFromLocalStorage() {
+    //Load comments from the local storage
     return JSON.parse(localStorage.getItem(this.COMMENTS_KEY));
-  } //Load comments from the local storage
+  }
 
   private saveComments(comments) {
     localStorage.setItem(this.COMMENTS_KEY, JSON.stringify(comments));
   } //Save comments to the local storage
 
   private async importComments() {
+    console.log('aaa');
+
     const users = await this.userService.loadUsers();
-    let comments: any = await lastValueFrom(
-      this.http.get<Observable<Comment[]>>('../../assets/data/comments.json')
-    );
-    comments = comments.map((comment) => {
+
+    let comments: any = await import('../../assets/data/comments.json');
+
+    comments = comments.default.map((comment) => {
       return {
         ...comment,
         owner: users.find((user) => user.id === comment.ownerId),

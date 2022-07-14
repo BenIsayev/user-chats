@@ -27,14 +27,18 @@ export class UserService {
   } //Load the users when needed(from local storage/importing the file in case not found in local storage)
 
   private async importUsers() {
-    const users = await lastValueFrom(
-      this.http.get('../../assets/data/users.json')
-    );
-    return users;
+    // const users = await lastValueFrom(
+    //   // this.http.get('../../assets/data/users.json')
+    //   this.http.get('@/src/assets/data/users.json')
+    // );
+    let users = await import('../../assets/data/users.json');
+
+    return users.default;
   } //Import the users ONLY if there are no users in the local storage
 
   private loadUsersFromStorage() {
     const users = JSON.parse(localStorage.getItem(this.USERS_KEY));
+    if (!users) return null;
     return users;
   } //Load the user from the local storage
 

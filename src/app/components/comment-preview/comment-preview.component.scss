@@ -38,12 +38,14 @@
             }
         }
         .comment-details {
+            max-width: 100px;
             justify-self: center;
             display: flex;
             flex-direction: column;
             flex-basis: 20%;
             .owner-name {
                 text-decoration: underline;
+                word-wrap: break-word;
             }
         }
         .content {
