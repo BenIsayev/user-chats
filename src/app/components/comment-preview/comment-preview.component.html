@@ -24,7 +24,8 @@
         </div>
     </div>
     <div *ngIf="isAddComment" class="add-comment-container" [style]="styleForPosition">
-        <add-comment [parentCommentId]="comment.id" (addComment)="addComment.emit($event)"></add-comment>
+        <add-comment [parentCommentId]="comment.id" (addComment)="addComment.emit($event)">
+        </add-comment>
     </div>
     <div *ngIf="isEditComment" class="add-comment-container" [style]="styleForPosition">
         <add-comment [commentId]="comment.id" [txt]="comment.txt" (addComment)="addComment.emit($event)"

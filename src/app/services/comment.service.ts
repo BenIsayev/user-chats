@@ -23,15 +23,25 @@ export class CommentService {
     private userMsgService: UserMsgService
   ) {}
 
-  loadCommentsFromLocalStorage() {
+  async loadComments() {
+    let comments =
+      this.loadCommentsFromLocalStorage() || (await this.importComments());
+    comments = this.sortCommentsByDate(comments);
+    // comments = this.sortByChildren(comments);
+    comments = this.sortByChildrenSecond(comments); // Another way to sort by children(a little more simple)
+
+    this._comments$.next(comments);
+  } //Load comments and setting them in the comments observables(subscribed in relevent components)
+
+  private loadCommentsFromLocalStorage() {
     return JSON.parse(localStorage.getItem(this.COMMENTS_KEY));
   } //Load comments from the local storage
 
-  saveComments(comments) {
+  private saveComments(comments) {
     localStorage.setItem(this.COMMENTS_KEY, JSON.stringify(comments));
   } //Save comments to the local storage
 
-  async importComments() {
+  private async importComments() {
     const users = await this.userService.loadUsers();
     let comments: any = await lastValueFrom(
       this.http.get<Observable<Comment[]>>('../../assets/data/comments.json')
@@ -47,17 +57,7 @@ export class CommentService {
     return comments;
   } //Import the comments from a file in case not found in the local storage
 
-  async loadComments() {
-    let comments =
-      this.loadCommentsFromLocalStorage() || (await this.importComments());
-    comments = this.sortCommentsByDate(comments);
-    // comments = this.sortByChildren(comments);
-    comments = this.sortByChildrenSecond(comments); // Another way to sort by children(a little more simple)
-
-    this._comments$.next(comments);
-  } //Load comments and setting them in the comments observables(subscribed in relevent components)
-
-  sortCommentsByDate(comments) {
+  private sortCommentsByDate(comments) {
     return comments.sort((comment1, comment2) => {
       const firstCommentTime = Date.parse(comment1.createdAt);
       const secondCommentTime = Date.parse(comment2.createdAt);
@@ -65,7 +65,7 @@ export class CommentService {
     });
   }
 
-  sortByChildren(comments) {
+  private sortByChildren(comments) {
     const byParent = new Map();
     for (const comment of comments) {
       let children = byParent.get(comment.parentCommentId);
@@ -94,7 +94,7 @@ export class CommentService {
     return mappedComments;
   }
 
-  sortByChildrenSecond(comments) {
+  private sortByChildrenSecond(comments) {
     const sortedComments = [];
     const refrences = [];
     for (let i = 0; i < comments.length; i++) {
@@ -125,13 +125,15 @@ export class CommentService {
   }
 
   deleteComment(commentId: number) {
-    // const flatComments = this.loadCommentsFromLocalStorage();
     let comments: Comment[];
     const subscription = this.comments$.subscribe(
       (recentComments) => (comments = recentComments)
     );
 
     let CommentsToDeleteFrom = flat(comments); //Flatten the comments to find specific comment because in the local storage they are saved without children property
+    CommentsToDeleteFrom.forEach((comment) => {
+      delete comment.children;
+    }); //Deleting all children from comments because later it arranges them from the start and can make alot of duplications
 
     const comment = CommentsToDeleteFrom.find(
       (potentialComment) => potentialComment.id === commentId
@@ -141,12 +143,13 @@ export class CommentService {
     if (comment.children?.length) {
       this.markChildrenAsDeleted(comment);
     }
-    this.saveComments(comments);
+    this.saveComments(CommentsToDeleteFrom);
     this.loadComments();
     this.userMsgService.setMsg({ txt: 'Comment deleted', type: 'success' });
     subscription.unsubscribe();
 
     function flat(array) {
+      array = JSON.parse(JSON.stringify(array));
       let result = [];
       array.forEach(function (a) {
         result.push(a);
@@ -158,7 +161,7 @@ export class CommentService {
     }
   }
 
-  markChildrenAsDeleted(comment: Comment) {
+  private markChildrenAsDeleted(comment: Comment) {
     comment.children.forEach((child) => {
       child.deletedAt = new Date().toString();
       if (child.children?.length) this.markChildrenAsDeleted(child);
@@ -168,12 +171,15 @@ export class CommentService {
   handleComment(comment) {
     comment.id ? this.editComment(comment) : this.addComment(comment);
   }
-  addComment(comment) {
-    const commentToAdd = this.getEmptyComment();
-    commentToAdd.owner = comment.owner;
-    commentToAdd.ownerId = comment.owner.id;
-    commentToAdd.txt = comment.txt;
-    commentToAdd.parentCommentId = comment.parentCommentId;
+  private addComment({ owner, txt, parentCommentId }) {
+    let commentToAdd = this.getEmptyComment();
+    commentToAdd = {
+      ...commentToAdd,
+      owner,
+      ownerId: owner.id,
+      txt,
+      parentCommentId,
+    };
 
     const comments = this.loadCommentsFromLocalStorage();
     comments.push(commentToAdd);
@@ -182,7 +188,7 @@ export class CommentService {
     this.loadComments();
   }
 
-  editComment(commentToSave) {
+  private editComment(commentToSave) {
     const comments = this.loadCommentsFromLocalStorage();
     const comment = comments.find((comment) => comment.id === commentToSave.id);
     comment.txt = commentToSave.txt;

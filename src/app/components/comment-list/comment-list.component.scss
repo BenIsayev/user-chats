@@ -1,0 +1,8 @@
+.comment-list {
+    &:last-child {
+        margin-bottom: 1rem;
+    }
+    .root-comment {
+        border-left: 3px solid blue;
+    }
+}
