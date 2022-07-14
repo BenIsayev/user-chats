@@ -120,12 +120,18 @@ export class CommentService {
   }
 
   deleteComment(commentId: number) {
-    // const comments = this.loadCommentsFromLocalStorage();
+    // const flatComments = this.loadCommentsFromLocalStorage();
     let comments: Comment[];
     const subscription = this.comments$.subscribe(
       (recentComments) => (comments = recentComments)
     );
-    const comment = comments.find((comment) => comment.id === commentId);
+
+    let CommentsToDeleteFrom = flat(comments); //Flatten the comments to find specific comment because in the local storage they are saved without children property
+
+    const comment = CommentsToDeleteFrom.find(
+      (potentialComment) => potentialComment.id === commentId
+    );
+
     comment.deletedAt = new Date().toString();
     if (comment.children?.length) {
       this.markChildrenAsDeleted(comment);
@@ -133,6 +139,17 @@ export class CommentService {
     this.saveComments(comments);
     this.loadComments();
     subscription.unsubscribe();
+
+    function flat(array) {
+      let result = [];
+      array.forEach(function (a) {
+        result.push(a);
+        if (Array.isArray(a.children)) {
+          result = result.concat(flat(a.children));
+        }
+      });
+      return result;
+    }
   }
 
   markChildrenAsDeleted(comment: Comment) {
