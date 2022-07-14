@@ -30,8 +30,6 @@ export class CommentPageComponent implements OnInit, OnDestroy {
 
     this.commentsSubscription = this.commentService.comments$.subscribe(
       (comments) => {
-        console.log('updated', comments);
-
         this.comments = comments;
       }
     );

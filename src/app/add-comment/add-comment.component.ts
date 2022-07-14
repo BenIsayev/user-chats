@@ -23,7 +23,7 @@ export class AddCommentComponent implements OnInit {
   }
 
   addCommentHandler() {
-    console.log(this.comment);
+    this.comment;
 
     this.addComment.emit(this.comment);
     this.comment.txt = '';

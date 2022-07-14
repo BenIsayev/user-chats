@@ -46,7 +46,8 @@ export class CommentService {
     let comments =
       this.loadCommentsFromLocalStorage() || (await this.importComments());
     comments = this.sortCommentsByDate(comments);
-    comments = this.sortByChildren(comments);
+    // comments = this.sortByChildren(comments);
+    comments = this.sortByChildrenSecond(comments); // Another way to sort by children(a little more simple)
 
     this._comments$.next(comments);
   } //Load comments and setting them in the comments observables(subscribed in relevent components)
@@ -85,18 +86,60 @@ export class CommentService {
         mappedComments.push(getChildren(comment));
       });
 
-    console.log(mappedComments);
-
     return mappedComments;
   }
 
+  sortByChildrenSecond(comments) {
+    const sortedComments = [];
+    const refrences = [];
+    for (let i = 0; i < comments.length; i++) {
+      const comment = comments[i];
+
+      if (comment.parentCommentId) {
+        let parentComment = comments.find(
+          (potentialParent) => potentialParent.id === comment.parentCommentId
+        );
+        if (!parentComment) {
+          parentComment = refrences.find(
+            (potentialParent) => potentialParent.id === comment.parentCommentId
+          );
+        }
+        if (!parentComment)
+          parentComment = sortedComments.find(
+            (potentialParent) => potentialParent.id === comment.parentCommentId
+          );
+
+        if (!parentComment.children) parentComment.children = [comment];
+        else parentComment.children.push(comment);
+        refrences.push(comment);
+      } else {
+        sortedComments.push(comment);
+      }
+    }
+    return sortedComments;
+  }
+
   deleteComment(commentId: number) {
-    const comments = this.loadCommentsFromLocalStorage();
+    // const comments = this.loadCommentsFromLocalStorage();
+    let comments: Comment[];
+    const subscription = this.comments$.subscribe(
+      (recentComments) => (comments = recentComments)
+    );
     const comment = comments.find((comment) => comment.id === commentId);
-    console.log(comment);
     comment.deletedAt = new Date().toString();
+    if (comment.children?.length) {
+      this.markChildrenAsDeleted(comment);
+    }
     this.saveComments(comments);
     this.loadComments();
+    subscription.unsubscribe();
+  }
+
+  markChildrenAsDeleted(comment: Comment) {
+    comment.children.forEach((child) => {
+      child.deletedAt = new Date().toString();
+      if (child.children?.length) this.markChildrenAsDeleted(child);
+    });
   }
 
   handleComment(comment) {
